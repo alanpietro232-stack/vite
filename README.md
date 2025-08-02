@@ -1,59 +1,187 @@
-<p align="center">
-  <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
-    <img width="180" src="https://vite.dev/logo.svg" alt="Vite logo">
-  </a>
-</p>
-<br/>
-<p align="center">
-  <a href="https://npmjs.com/package/vite"><img src="https://img.shields.io/npm/v/vite.svg" alt="npm package"></a>
-  <a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/vite.svg" alt="node compatibility"></a>
-  <a href="https://github.com/vitejs/vite/actions/workflows/ci.yml"><img src="https://github.com/vitejs/vite/actions/workflows/ci.yml/badge.svg?branch=main" alt="build status"></a>
-  <a href="https://pr.new/vitejs/vite"><img src="https://developer.stackblitz.com/img/start_pr_dark_small.svg" alt="Start new PR in StackBlitz Codeflow"></a>
-  <a href="https://chat.vite.dev"><img src="https://img.shields.io/badge/chat-discord-blue?style=flat&logo=discord" alt="discord chat"></a>
-</p>
-<br/>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema Pousada Bicharada</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { color: #333; }
+    form, table { margin-bottom: 30px; }
+    table, th, td { border: 1px solid #ccc; border-collapse: collapse; padding: 8px; }
+    button { padding: 6px 12px; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Sistema Pousada Bicharada</h1>
 
-# Vite ⚡
+  <!-- Cadastro Pet e Tutor -->
+  <h2>Cadastro de Pet e Tutor</h2>
+  <form id="cadastroForm">
+    <input type="text" placeholder="Nome do Pet" id="petNome" required>
+    <input type="text" placeholder="Nome do Tutor" id="tutorNome" required><br><br>
+    <label>Porte:</label>
+    <select id="porte">
+      <option value="P">P</option>
+      <option value="M">M</option>
+      <option value="G">G</option>
+    </select>
+    <input type="text" placeholder="Espécie" id="especie">
+    <input type="text" placeholder="Comida (ração/natural)" id="comida">
+    <input type="text" placeholder="Horário da comida" id="horario">
+    <input type="text" placeholder="Medicação" id="medicacao">
+    <input type="text" placeholder="Vacinas" id="vacinas">
+    <input type="text" placeholder="Vermífugo" id="vermifugo">
+    <input type="text" placeholder="Pulga/Carrapato" id="pulga">
+    <input type="text" placeholder="Comportamento/Restrições" id="comportamento">
+    <label>Castrado?</label>
+    <select id="castrado">
+      <option value="Sim">Sim</option>
+      <option value="Não">Não</option>
+    </select><br><br>
+    <button type="submit">Salvar Pet</button>
+  </form>
 
-> Next Generation Frontend Tooling
+  <table id="tabelaPets">
+    <thead>
+      <tr>
+        <th>Pet</th><th>Tutor</th><th>Porte</th><th>Espécie</th><th>Comida</th><th>Horário</th><th>Medicação</th><th>Vacinas</th><th>Vermífugo</th><th>Pulga/Carrapato</th><th>Comportamento</th><th>Castrado</th><th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-- 💡 Instant Server Start
-- ⚡️ Lightning Fast HMR
-- 🛠️ Rich Features
-- 📦 Optimized Build
-- 🔩 Universal Plugin Interface
-- 🔑 Fully Typed APIs
+  <!-- Registro de Creche -->
+  <h2>Controle de Creche</h2>
+  <form id="crecheForm">
+    <input type="text" placeholder="Nome do Pet" id="crechePet" required>
+    <input type="text" placeholder="Tutor" id="crecheTutor" required>
+    <label>Porte:</label>
+    <select id="crechePorte">
+      <option value="P">P</option>
+      <option value="M">M</option>
+      <option value="G">G</option>
+    </select>
+    <label>Plano:</label>
+    <select id="plano">
+      <option value="Avulso">Avulso</option>
+      <option value="Adaptação">Adaptação</option>
+      <option value="1x">1x na semana</option>
+      <option value="2x">2x na semana</option>
+      <option value="3x">3x na semana</option>
+      <option value="4x">4x na semana</option>
+      <option value="5x">5x na semana</option>
+      <option value="Personalizado">Valor Personalizado</option>
+    </select>
+    <input type="date" id="crecheData" required>
+    <input type="number" placeholder="Valor personalizado" id="valorPersonalizado">
+    <button type="submit">Registrar Frequência</button>
+  </form>
 
-Vite (French word for "quick", pronounced [`/vit/`](https://cdn.jsdelivr.net/gh/vitejs/vite@main/docs/public/vite.mp3), like "veet") is a new breed of frontend build tooling that significantly improves the frontend development experience. It consists of two major parts:
+  <table id="tabelaCreche">
+    <thead>
+      <tr>
+        <th>Pet</th><th>Tutor</th><th>Porte</th><th>Plano</th><th>Data</th><th>Valor</th><th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-- A dev server that serves your source files over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), with [rich built-in features](https://vite.dev/guide/features.html) and astonishingly fast [Hot Module Replacement (HMR)](https://vite.dev/guide/features.html#hot-module-replacement).
+  <script>
+    let pets = JSON.parse(localStorage.getItem('pets')) || [];
+    let creche = JSON.parse(localStorage.getItem('creche')) || [];
 
-- A [build command](https://vite.dev/guide/build.html) that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+    document.getElementById('cadastroForm').onsubmit = e => {
+      e.preventDefault();
+      const pet = {
+        nome: petNome.value,
+        tutor: tutorNome.value,
+        porte: porte.value,
+        especie: especie.value,
+        comida: comida.value,
+        horario: horario.value,
+        medicacao: medicacao.value,
+        vacinas: vacinas.value,
+        vermifugo: vermifugo.value,
+        pulga: pulga.value,
+        comportamento: comportamento.value,
+        castrado: castrado.value
+      };
+      pets.push(pet);
+      localStorage.setItem('pets', JSON.stringify(pets));
+      renderPets();
+      e.target.reset();
+    };
 
-In addition, Vite is highly extensible via its [Plugin API](https://vite.dev/guide/api-plugin.html) and [JavaScript API](https://vite.dev/guide/api-javascript.html) with full typing support.
+    function renderPets() {
+      const tbody = document.querySelector('#tabelaPets tbody');
+      tbody.innerHTML = '';
+      pets.forEach((p, i) => {
+        tbody.innerHTML += `<tr>
+          <td>${p.nome}</td><td>${p.tutor}</td><td>${p.porte}</td><td>${p.especie}</td>
+          <td>${p.comida}</td><td>${p.horario}</td><td>${p.medicacao}</td><td>${p.vacinas}</td>
+          <td>${p.vermifugo}</td><td>${p.pulga}</td><td>${p.comportamento}</td><td>${p.castrado}</td>
+          <td><button onclick="excluirPet(${i})">Excluir</button></td>
+        </tr>`;
+      });
+    }
 
-[Read the Docs to Learn More](https://vite.dev).
+    function excluirPet(i) {
+      pets.splice(i, 1);
+      localStorage.setItem('pets', JSON.stringify(pets));
+      renderPets();
+    }
 
-## Packages
+    document.getElementById('crecheForm').onsubmit = e => {
+      e.preventDefault();
+      const plano = plano.value;
+      let valor = 0;
+      const valores = {
+        'Avulso': 85,
+        'Adaptação': 65,
+        '1x': 79,
+        '2x': 60,
+        '3x': 55,
+        '4x': 59,
+        '5x': 45
+      };
+      if (plano === 'Personalizado') {
+        valor = parseFloat(valorPersonalizado.value);
+      } else {
+        valor = valores[plano] || 0;
+      }
+      creche.push({
+        pet: crechePet.value,
+        tutor: crecheTutor.value,
+        porte: crechePorte.value,
+        plano,
+        data: crecheData.value,
+        valor
+      });
+      localStorage.setItem('creche', JSON.stringify(creche));
+      renderCreche();
+      e.target.reset();
+    };
 
-| Package                                         | Version (click for changelogs)                                                                                                    |
-| ----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| [vite](packages/vite)                           | [![vite version](https://img.shields.io/npm/v/vite.svg?label=%20)](packages/vite/CHANGELOG.md)                                    |
-| [@vitejs/plugin-legacy](packages/plugin-legacy) | [![plugin-legacy version](https://img.shields.io/npm/v/@vitejs/plugin-legacy.svg?label=%20)](packages/plugin-legacy/CHANGELOG.md) |
-| [create-vite](packages/create-vite)             | [![create-vite version](https://img.shields.io/npm/v/create-vite.svg?label=%20)](packages/create-vite/CHANGELOG.md)               |
+    function renderCreche() {
+      const tbody = document.querySelector('#tabelaCreche tbody');
+      tbody.innerHTML = '';
+      creche.forEach((c, i) => {
+        tbody.innerHTML += `<tr>
+          <td>${c.pet}</td><td>${c.tutor}</td><td>${c.porte}</td><td>${c.plano}</td>
+          <td>${c.data}</td><td>R$ ${c.valor.toFixed(2)}</td>
+          <td><button onclick="excluirCreche(${i})">Excluir</button></td>
+        </tr>`;
+      });
+    }
 
-## Contribution
+    function excluirCreche(i) {
+      creche.splice(i, 1);
+      localStorage.setItem('creche', JSON.stringify(creche));
+      renderCreche();
+    }
 
-See [Contributing Guide](CONTRIBUTING.md).
-
-## License
-
-[MIT](LICENSE).
-
-## Sponsors
-
-<p align="center">
-  <a target="_blank" href="https://github.com/sponsors/yyx990803">
-    <img alt="sponsors" src="https://sponsors.vuejs.org/vite.svg?v2">
-  </a>
-</p>
+    renderPets();
+    renderCreche();
+  </script>
+</body>
+</html>
